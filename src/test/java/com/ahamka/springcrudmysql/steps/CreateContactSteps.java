@@ -51,13 +51,15 @@ public class CreateContactSteps extends AbstractSteps implements En {
 
       switch (expectedResult) {
         case "IS SUCCESSFUL":
-          assertThat(response.statusCode()).isIn(200, 201);
-          break;
+            assertThat(response.statusCode()).isIn(200, 201);
+        break;
+
         case "FAILS":
-          assertThat(response.statusCode()).isBetween(400, 504);
-          break;
+            assertThat(response.statusCode()).isBetween(400, 504);
+        break;
+
         default:
-          fail("Unexpected error");
+            fail("Unexpected error");
       }
     });
 

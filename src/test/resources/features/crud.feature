@@ -1,6 +1,6 @@
 Feature: End to End
 
-    Scenario: GET ALL CONTACTS 
+    Scenario: GET ALL CONTACTS
         Given user wants to call get all contacts  
         When user calls get all contacts
         Then the result is
@@ -17,23 +17,34 @@ Feature: End to End
         When user saves the new contact 'WITH ALL REQUIRED FIELDS'
         Then the save 'IS SUCCESSFUL'
 
-#    Scenario: UPDATE CONTACT
-#        Given user wants to update a contact with the following attributes
-#        | name             | email                         | phone              | 
-#        | cucumbertestu    | cucumbertestu@domain.com      | (836) 222-3000-123 |
-#        When user updates contact
-#        Then the update 'IS SUCCESSFUL'
-    
     Scenario: GET CONTACT BY EMAIL
         Given user wants to call get_contact_by_email
         When user calls get_contact_by_email with "cucumbertest@domain.com"
         Then the get by email result is
-        | id  | name             | email                   | phone          |
-        | 999 | cucumbertest    | cucumbertest@domain.com  | (836) 222-3000 |
+        | id  | name             | email                    | phone          |
+        | 999 | cucumbertest     | cucumbertest@domain.com  | (836) 222-3000 |
+
+    Scenario: GET CONTACT BY INVALID EMAIL
+        Given user wants to call get_contact_by_invalid_email
+        When user calls get_contact_by_invalid_email with "invalid@domain.com"
+        Then the get invalid contact result is 'FAILS'
+
+    Scenario: UPDATE CONTACT BY EMAIL    
+        Given user prepars update data
+        | name             | email                         | phone              | 
+        | cucumbertestu    | cucumbertestu@domain.com      | (836) 222-3000-123 |
+        When user calls update "cucumbertest@domain.com" with new data
+        Then the update result 'IS SUCCESSFUL'
+    
 
     Scenario: DELETE CONTACT BY EMAIL
         Given user wants to call del_contact_by_email
-        When user calls del_contact_by_email with "cucumbertest@domain.com"
-        Then the delete 'IS SUCCESSFUL'   
+        When user calls del_contact_by_email with "cucumbertestu@domain.com"
+        Then the delete 'IS SUCCESSFUL'
+        
+    Scenario: DELETE CONTACT BY INVALID EMAIL
+        Given user wants to call del_contact_by_email
+        When user calls del_contact_by_email with "cucumbertestu@domain.com"
+        Then the delete 'FAILS' 
     
     

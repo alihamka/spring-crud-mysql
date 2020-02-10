@@ -6,28 +6,22 @@ import static org.assertj.core.api.Assertions.fail;
 import cucumber.api.java8.En;
 import io.restassured.response.Response;
 
-/**
- * Step Definition Class for Contact.
- *
- * <p>Uses Java Lambda style step definitions so that we don't need to worry
- * about method naming for each step definition</p>
- */
-public class DeleteContactSteps extends AbstractSteps implements En {
+public class GetContactByInvalidEmail extends AbstractSteps implements En {
 
-    public DeleteContactSteps() {
+    public GetContactByInvalidEmail() {
 
-        Given("user wants to call del_contact_by_email", () -> {
+        Given("user wants to call get_contact_by_invalid_email", () -> {
             testContext().reset();
         });
         
-        When("user calls del_contact_by_email with {string}", (String email) -> {        
-            String delContactsUrl = "/contacts/email/"+email;
+        When("user calls get_contact_by_invalid_email with {string}", (String email) -> {        
+            String getContactsUrl = "/contacts/email/"+email;
 
-            // AbstractSteps class makes the DELETE call and stores response in TestContext
-            executeDelete(delContactsUrl);
+            // AbstractSteps class makes the GET call and stores response in TestContext
+            executeGet(getContactsUrl);
         });
         
-        Then("the delete {string}", (String expectedResult) -> {
+        Then("the get invalid contact result is {string}", (String expectedResult) -> {
             
             Response response = testContext().getResponse();
 
@@ -47,3 +41,6 @@ public class DeleteContactSteps extends AbstractSteps implements En {
 
   }
 }
+
+
+

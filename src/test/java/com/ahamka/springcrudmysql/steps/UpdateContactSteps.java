@@ -3,7 +3,12 @@ package com.ahamka.springcrudmysql.steps;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
+import java.util.List;
+
+import com.ahamka.springcrudmysql.model.Contact;
+
 import cucumber.api.java8.En;
+import io.cucumber.datatable.DataTable;
 import io.restassured.response.Response;
 
 
@@ -17,30 +22,39 @@ public class UpdateContactSteps extends AbstractSteps implements En {
 
     public UpdateContactSteps() {
 
-        Given("user wants to update a contact with the following attributes", () -> {
-            testContext().reset();
-        });
-        
-        When("user updates contact by mail {string}", (String email) -> {        
-            String putContactsUrl = "/contacts/email/"+email;
+        Given("user prepars update data", 
+            (DataTable contactDt) -> {
+            
+                testContext().reset();                
 
-            // AbstractSteps class makes the GET call and stores response in TestContext
-            executePut(putContactsUrl);
-        });
-        
-        Then("the update {string}", (String expectedResult) -> {
+                List<Contact> contactList = contactDt.asList(Contact.class);
+                      // First row of DataTable has the contact attributes hence calling get(0) method.
+                super.testContext()
+                    .setPayload(contactList.get(0));
+             });
+
+          When("user calls update {string} with new data", (String email) -> {
+                String putContactsUrl = "/contacts/email/"+email;      
+                executePut(putContactsUrl);
+          });
+
+                
+        Then("the update result {string}", (String expectedResult) -> {
             
             Response response = testContext().getResponse();
 
             switch (expectedResult) {
+                
                 case "IS SUCCESSFUL":
-                assertThat(response.statusCode()).isIn(200, 201);
+                    assertThat(response.statusCode()).isIn(200, 201);
                 break;
+
                 case "FAILS":
-                assertThat(response.statusCode()).isBetween(400, 504);
+                    assertThat(response.statusCode()).isBetween(400, 504);
                 break;
+
                 default:
-                fail("Unexpected error");
+                    fail("Unexpected error");
             }
         });
 
